@@ -22,6 +22,7 @@ afterAll(async (done) => {
 
 test("sanity check", () => {
   expect(true).not.toBe(false);
+  expect(2 + 2).toEqual(5)
 });
 
 describe("/register endpoint", () => {
