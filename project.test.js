@@ -1,4 +1,3 @@
-// do not make changes to this file
 const request = require('supertest')
 const server = require('./api/server')
 const db = require('./data/dbConfig')
@@ -21,9 +20,6 @@ it('sanity check jokes', () => {
 })
 
 describe('server.js', () => {
-  // 👉 AUTH
-  // 👉 AUTH
-  // 👉 AUTH
   describe('auth endpoints', () => {
     describe('[POST] /api/auth/register', () => {
       beforeEach(async () => {
@@ -126,36 +122,34 @@ describe('server.js', () => {
     })
   })
 
-  // 👉 JOKES
-  // 👉 JOKES
-  // 👉 JOKES
-  describe('jokes endpoint', () => {
-    describe('[GET] /api/jokes', () => {
-      beforeEach(async () => {
-        await db('users').truncate()
-        await request(server).post('/api/auth/register').send(userA)
-      })
-      it('responds with an error status code on missing token', async () => {
-        const res = await request(server).get('/api/jokes')
-        expect(res.status + '').toMatch(/4|5/)
-      }, 500)
-      it('responds with a "token required" message on missing token', async () => {
-        const res = await request(server).get('/api/jokes')
-        expect(JSON.stringify(res.body)).toEqual(expect.stringMatching(/required/i))
-      }, 500)
-      it('responds with an error status code on invalid token', async () => {
-        const res = await request(server).get('/api/jokes').set('Authorization', 'bad token')
-        expect(res.status + '').toMatch(/4|5/)
-      }, 500)
-      it('responds with a "token invalid" message on invalid token', async () => {
-        const res = await request(server).get('/api/jokes').set('Authorization', 'bad token')
-        expect(JSON.stringify(res.body)).toEqual(expect.stringMatching(/invalid/i))
-      }, 500)
-      it('responds with the jokes on valid token', async () => {
-        const { body: { token } } = await request(server).post('/api/auth/login').send(userA)
-        const res = await request(server).get('/api/jokes').set('Authorization', token)
-        expect(JSON.stringify(res.body)).toEqual(expect.stringMatching('Did you hear about the guy whose'))
-      }, 500)
-    })
-  })
+  // 👉 journal posts
+  // describe('jokes endpoint', () => {
+  //   describe('[GET] /api/jokes', () => {
+  //     beforeEach(async () => {
+  //       await db('users').truncate()
+  //       await request(server).post('/api/auth/register').send(userA)
+  //     })
+  //     it('responds with an error status code on missing token', async () => {
+  //       const res = await request(server).get('/api/jokes')
+  //       expect(res.status + '').toMatch(/4|5/)
+  //     }, 500)
+  //     it('responds with a "token required" message on missing token', async () => {
+  //       const res = await request(server).get('/api/jokes')
+  //       expect(JSON.stringify(res.body)).toEqual(expect.stringMatching(/required/i))
+  //     }, 500)
+  //     it('responds with an error status code on invalid token', async () => {
+  //       const res = await request(server).get('/api/jokes').set('Authorization', 'bad token')
+  //       expect(res.status + '').toMatch(/4|5/)
+  //     }, 500)
+  //     it('responds with a "token invalid" message on invalid token', async () => {
+  //       const res = await request(server).get('/api/jokes').set('Authorization', 'bad token')
+  //       expect(JSON.stringify(res.body)).toEqual(expect.stringMatching(/invalid/i))
+  //     }, 500)
+  //     it('responds with the jokes on valid token', async () => {
+  //       const { body: { token } } = await request(server).post('/api/auth/login').send(userA)
+  //       const res = await request(server).get('/api/jokes').set('Authorization', token)
+  //       expect(JSON.stringify(res.body)).toEqual(expect.stringMatching('Did you hear about the guy whose'))
+  //     }, 500)
+  //   })
+  // })
 })
